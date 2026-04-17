@@ -1,27 +1,32 @@
 package edu.cmu.Weather;
 
+// API Design Fix: Replaced ambiguous boolean parameter with enum for better clarity.
+// Using LengthScale enum instead of boolean 'inches' makes the API more self-documenting and less error-prone.
 public class Weather {
+    public enum LengthScale {
+        INCHES, MILLIMETERS
+    }
+    
     private WeatherService weatherService;
-    private boolean inches;
+    private LengthScale lengthScale;
 
     /**
-     * Sets the length scale for rainfall.
+     * Sets the length scale for rainfall measurements.
      *
-     * @param inches if true, sets the scale to inches; if false, sets the scale to millimeters.
+     * @param lengthScale the desired length scale (INCHES or MILLIMETERS)
      */
-    public void setLengthScale(boolean inches) {
-        this.inches = inches;
+    public void setLengthScale(LengthScale lengthScale) {
+        this.lengthScale = lengthScale;
     }
 
     /**
      * Retrieves the rainfall measurement over the last 24 hours from the weather service in the preferred scale.
      * 
-     * @return the rainfall amount. If the measurement is in inches, it returns the value as is.
-     *         If the measurement is not in inches, it converts the value to millimeters.
+     * @return the rainfall amount in the scale set by setLengthScale
      */
     public double getRainfall() {
         double wsRainfall = weatherService.getRainfall();
-        if (inches) {
+        if (lengthScale == LengthScale.INCHES) {
             return wsRainfall / 25.4;
         } else {
             return wsRainfall;

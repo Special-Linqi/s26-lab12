@@ -1,5 +1,7 @@
 package edu.cmu.Library;
 
+// API Design Fix: Fixed parameter parsing to match documentation.
+// The documentation specifies "libraryID:userName" format, but the code was reversing the order.
 public class LibraryAccount {
     private LibraryService libraryService;
  
@@ -14,8 +16,8 @@ public class LibraryAccount {
      */
     public Book[] getBooks(String userId) {
         String[] parts = userId.split(":");
-        String name = parts[0];
-        String id = parts[1];
-        return libraryService.getBooks(name, id);        
+        String libraryId = parts[0];
+        String userName = parts[1];
+        return libraryService.getBooks(libraryId, userName);        
     }
 }
